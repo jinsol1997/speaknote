@@ -36,7 +36,7 @@ public class LocalFileStorageService implements FileStorageService {
 
             Path target = uploadPath.resolve(saveFilename);
 
-            // 실제 저장
+            // 메모리 상의 multipartFile을 파일로 저장 후 메모리 삭제하므로 서비스 중 마지막에 실행돼야함
             file.transferTo(target.toFile());
 
             // 성공 결과 반환

@@ -3,6 +3,7 @@ package com.speaknote.speaknote.controller;
 import com.speaknote.speaknote.dto.FileStorageResult;
 import com.speaknote.speaknote.service.FileStorageService;
 
+import com.speaknote.speaknote.service.Gpt4oTranscribeDiarizeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AudioController {
 
     private final FileStorageService fileStorageService;
+    private final Gpt4oTranscribeDiarizeService  gpt4oTranscribeDiarizeService;
 
     @PostMapping("/process")
     public ResponseEntity<?> uploadAudio(@CookieValue(value = "recorder_id") String recorder_id,
@@ -30,6 +32,8 @@ public class AudioController {
                                     .build()
                     );
         }
+
+        System.out.println(gpt4oTranscribeDiarizeService.transcribeDiarize(file));
 
         FileStorageResult fileStorageResult = fileStorageService.upload(file, recorder_id);
         HttpStatus status = fileStorageResult.isSuccess() ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
