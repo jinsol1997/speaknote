@@ -1,6 +1,7 @@
 package com.speaknote.speaknote.controller;
 
 import com.speaknote.speaknote.dto.FileStorageResult;
+import com.speaknote.speaknote.dto.TranscribeDiarizeResult;
 import com.speaknote.speaknote.service.FileStorageService;
 
 import com.speaknote.speaknote.service.Gpt4oTranscribeDiarizeService;
@@ -33,7 +34,11 @@ public class AudioController {
                     );
         }
 
-        System.out.println(gpt4oTranscribeDiarizeService.transcribeDiarize(file));
+
+        TranscribeDiarizeResult transcribeDiarizeResult = gpt4oTranscribeDiarizeService.transcribeDiarize(file);
+        if(!transcribeDiarizeResult.isSuccess()){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
         FileStorageResult fileStorageResult = fileStorageService.upload(file, recorder_id);
         HttpStatus status = fileStorageResult.isSuccess() ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
