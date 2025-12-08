@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
@@ -12,21 +13,10 @@ import java.util.UUID;
 public class IndexController {
 
     @RequestMapping("/")
-    public String index(HttpServletRequest request, HttpServletResponse response) {
+    public String index(@CookieValue(name = "recorder_id", required = false) String recorder_id, HttpServletResponse response) {
 
-        boolean hasRecorderId = false;
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie c : cookies) {
-                if ("recorder_id".equals(c.getName())) {
-                    hasRecorderId = true;
-                    break;
-                }
-            }
-        }
-
-        if (!hasRecorderId) {
+        if (recorder_id == null) {
             String id = UUID.randomUUID().toString();
 
             Cookie cookie = new Cookie("recorder_id", id);
