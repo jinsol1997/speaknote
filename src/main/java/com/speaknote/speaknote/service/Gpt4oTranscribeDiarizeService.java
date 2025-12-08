@@ -35,14 +35,20 @@ public class Gpt4oTranscribeDiarizeService {
 //            body.part("response_format", "json");
             // body.part("language", "ko");
 
-            // body.build() 미리 해두려면 MultiValueMap 선언해서 담아둬야함 진짜 빌더패턴이 아닌듯
+            // body.build() 미리 해두려면 MultiValueMap 선언해서 담아둬야함
 
-            body.part("file", new ByteArrayResource(file.getBytes()){
-                @Override
-                public String getFilename() {
-                    return "audio.wav";
-                }
-            });
+//            body.part("file", new ByteArrayResource(file.getBytes()){
+//                // 상위 추상클래스에서 구현된 getFilename이 null을 반환해서 오버라이드 해야함
+//                @Override
+//                public String getFilename() {
+//                    return "audio.wav";
+//                }
+//            });
+
+            body.part("file", file.getResource())
+                    .filename("audio")
+                    .contentType(MediaType.parseMediaType("audio/wav"));
+
 
             return webClient.post()
                     .uri("/audio/transcriptions")

@@ -15,18 +15,26 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class LocalFileStorageService implements FileStorageService {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    private final Path uploadPath;
+
+    public LocalFileStorageService(@Value("${file.upload-dir}") String uploadDir) {
+
+        // 파일 경로 최초 실행시에만 설정하도록 수정
+        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+        try{
+            if (!Files.exists(this.uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @Override
     public FileStorageResult upload(MultipartFile file, String recorder_id) {
 
         try {
-            // 업로드 디렉토리 생성
-            Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
 
             // 파일명: 시간_쿠키값.wav
             String timePrefix = LocalDateTime.now()
