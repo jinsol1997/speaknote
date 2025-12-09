@@ -7,10 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class FileStorageResult {
+public class DialogueSummaryResult {
     private boolean success;
     private String errorMessage;
-    private String fileName;
-    private String filePath;
-    private long fileSize;
+    private String dialogue;
+    private String summary;
 }

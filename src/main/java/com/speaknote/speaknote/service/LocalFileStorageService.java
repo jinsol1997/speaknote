@@ -50,7 +50,6 @@ public class LocalFileStorageService implements FileStorageService {
             // 성공 결과 반환
             return FileStorageResult.builder()
                     .success(true)
-                    .message("파일 업로드 완료")
                     .fileName(saveFilename)
                     .filePath(target.toString())
                     .fileSize(file.getSize())
@@ -59,7 +58,7 @@ public class LocalFileStorageService implements FileStorageService {
         } catch (IOException e) {
             return FileStorageResult.builder()
                     .success(false)
-                    .message("파일 저장 중 오류 발생")
+                    .errorMessage("파일 저장 중 오류 발생")
                     .build();
         }
 

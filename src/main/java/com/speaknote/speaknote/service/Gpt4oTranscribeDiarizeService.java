@@ -2,26 +2,18 @@ package com.speaknote.speaknote.service;
 
 import com.speaknote.speaknote.dto.TranscribeDiarizeResult;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
-public class Gpt4oTranscribeDiarizeService {
-
-    private final WebClient webClient;
+public class Gpt4oTranscribeDiarizeService extends AbstractOpenAiService {
 
     public Gpt4oTranscribeDiarizeService(@Value("${openai.api-key}") String apiKey) {
-
-        this.webClient = WebClient.builder()
-                .baseUrl("https://api.openai.com/v1")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
-                .build();
+        super(apiKey);
     }
 
     public TranscribeDiarizeResult transcribeDiarize(MultipartFile file) {
@@ -38,7 +30,7 @@ public class Gpt4oTranscribeDiarizeService {
             body.part("chunking_strategy", "auto");
             body.part("language", "ko");
 
-            String message = webClient.post()
+            String diarizedJson = webClient.post()
                     .uri("/audio/transcriptions")
                     .contentType(MediaType.MULTIPART_FORM_DATA)
                     .body(BodyInserters.fromMultipartData(body.build()))
@@ -48,7 +40,7 @@ public class Gpt4oTranscribeDiarizeService {
 
             return TranscribeDiarizeResult.builder()
                     .success(true)
-                    .message(message)
+                    .diarizedJson(diarizedJson)
                     .build();
 
         }
@@ -60,7 +52,7 @@ public class Gpt4oTranscribeDiarizeService {
 
             return TranscribeDiarizeResult.builder()
                     .success(false)
-                    .message(e.getResponseBodyAsString())
+                    .errorMessage(e.getResponseBodyAsString())
                     .build();
 
         }
@@ -68,7 +60,7 @@ public class Gpt4oTranscribeDiarizeService {
 
             return TranscribeDiarizeResult.builder()
                     .success(false)
-                    .message(e.getMessage())
+                    .errorMessage(e.getMessage())
                     .build();
 
         }

@@ -9,5 +9,6 @@ import lombok.Getter;
 @Builder
 public class TranscribeDiarizeResult {
     private boolean success;
-    private final String message;
+    private String diarizedJson;
+    private String errorMessage;
 }
