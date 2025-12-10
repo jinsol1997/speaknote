@@ -29,7 +29,7 @@ public class AudioController {
                     .body(
                             FileStorageResult.builder()
                                     .success(false)
-                                    .message("업로드된 파일 없음")
+                                    .errorMessage("업로드된 파일 없음")
                                     .build()
                     );
         }

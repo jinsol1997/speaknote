@@ -34,7 +34,7 @@ public class Gpt4oTranscribeDiarizeServiceTest {
         TranscribeDiarizeResult transcribeDiarizeResult = gpt4oTranscribeDiarizeService.transcribeDiarize(multipartFile);
 
         System.out.println(transcribeDiarizeResult.isSuccess());
-        System.out.println(transcribeDiarizeResult.getMessage());
+        System.out.println(transcribeDiarizeResult.getDiarizedJson());
 
     }
 
