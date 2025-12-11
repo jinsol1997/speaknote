@@ -1,4 +1,4 @@
-package com.speaknote.speaknote.service;
+package com.speaknote.speaknote.service.oai;
 
 import com.speaknote.speaknote.dto.TranscribeDiarizeResult;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.speaknote.speaknote.service;
+package com.speaknote.speaknote.service.storage;
 
 import com.speaknote.speaknote.dto.FileStorageResult;
 import org.springframework.web.multipart.MultipartFile;

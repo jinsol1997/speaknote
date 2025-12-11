@@ -1,7 +1,7 @@
 package com.speaknote.speaknote;
 
 import com.speaknote.speaknote.dto.DialogueSummaryResult;
-import com.speaknote.speaknote.service.DialogueSummaryService;
+import com.speaknote.speaknote.service.oai.DialogueSummaryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

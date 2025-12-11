@@ -1,4 +1,4 @@
-package com.speaknote.speaknote.service;
+package com.speaknote.speaknote.service.oai;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;

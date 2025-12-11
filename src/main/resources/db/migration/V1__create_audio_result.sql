@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS audio_result (
+    idx INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    recorder_id VARCHAR(100) NOT NULL,
+    dialogue TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size BIGINT NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (idx)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

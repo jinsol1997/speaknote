@@ -1,4 +1,4 @@
-package com.speaknote.speaknote.service;
+package com.speaknote.speaknote.service.oai;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DialogueSummaryService extends AbstractOpenAiService{
+public class DialogueSummaryService extends AbstractOpenAiService {
 
     private final ObjectMapper objectMapper;
 

@@ -1,7 +1,7 @@
 package com.speaknote.speaknote;
 
 import com.speaknote.speaknote.dto.TranscribeDiarizeResult;
-import com.speaknote.speaknote.service.Gpt4oTranscribeDiarizeService;
+import com.speaknote.speaknote.service.oai.Gpt4oTranscribeDiarizeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

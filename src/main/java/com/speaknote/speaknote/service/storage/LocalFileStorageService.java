@@ -1,4 +1,4 @@
-package com.speaknote.speaknote.service;
+package com.speaknote.speaknote.service.storage;
 
 import com.speaknote.speaknote.dto.FileStorageResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,7 @@ public class LocalFileStorageService implements FileStorageService {
     }
 
     @Override
-    public FileStorageResult upload(MultipartFile file, String recorder_id) {
+    public FileStorageResult upload(MultipartFile file, String recorderId) {
 
         try {
 
@@ -40,7 +40,7 @@ public class LocalFileStorageService implements FileStorageService {
             String timePrefix = LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 
-            String saveFilename = timePrefix + "_" + recorder_id + ".wav";
+            String saveFilename = timePrefix + "_" + recorderId + ".wav";
 
             Path target = uploadPath.resolve(saveFilename);
 

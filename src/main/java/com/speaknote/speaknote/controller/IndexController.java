@@ -12,13 +12,13 @@ import java.util.UUID;
 public class IndexController {
 
     @RequestMapping("/")
-    public String index(@CookieValue(name = "recorder_id", required = false) String recorder_id, HttpServletResponse response) {
+    public String index(@CookieValue(name = "recorderId", required = false) String recorder_id, HttpServletResponse response) {
 
 
-        if (recorder_id == null) {
+        if (recorder_id == null || recorder_id.isBlank()) {
             String id = UUID.randomUUID().toString();
 
-            Cookie cookie = new Cookie("recorder_id", id);
+            Cookie cookie = new Cookie("recorderId", id);
             cookie.setPath("/");                       // 모든 경로에서 사용
             cookie.setMaxAge(60 * 60 * 24 * 7);     // 7일짜리 쿠키
 
