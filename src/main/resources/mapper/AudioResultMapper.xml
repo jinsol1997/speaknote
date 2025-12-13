@@ -23,4 +23,22 @@
         )
     </insert>
 
+    <!-- &lt; == < -->
+    <select id="findOldData" resultType="com.speaknote.speaknote.domain.OldData">
+        SELECT idx, file_path FROM audio_result
+        WHERE created &lt; NOW() - INTERVAL 7 DAY
+    </select>
+
+    <delete id="deleteOldDataByIdxList" parameterType="list">
+        DELETE FROM audio_result
+        WHERE idx IN
+        <foreach collection="list"
+                 item="idx"
+                 open="("
+                 separator=","
+                 close=")">
+            #{idx}
+        </foreach>
+    </delete>
+    
 </mapper>

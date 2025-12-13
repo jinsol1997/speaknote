@@ -62,6 +62,29 @@ public class LocalFileStorageService implements FileStorageService {
                     .build();
         }
 
+    }
+
+    @Override
+    public boolean deleteByPath(String filePath){
+
+        try {
+
+            if (filePath == null || filePath.isBlank()){
+                return false;
+            }
+
+            Path path = Paths.get(filePath);
+
+            if (!Files.exists(path)){
+               return false;
+            }
+
+            Files.delete(path);
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
 
     }
 }
