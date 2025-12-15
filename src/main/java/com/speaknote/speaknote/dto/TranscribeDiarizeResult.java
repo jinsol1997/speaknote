@@ -10,5 +10,4 @@ import lombok.Getter;
 public class TranscribeDiarizeResult {
     private boolean success;
     private String diarizedJson;
-    private String errorMessage;
 }

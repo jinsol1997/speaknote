@@ -9,7 +9,6 @@ import lombok.Getter;
 @Builder
 public class DialogueSummaryResult {
     private boolean success;
-    private String errorMessage;
     private String dialogue;
     private String summary;
 }

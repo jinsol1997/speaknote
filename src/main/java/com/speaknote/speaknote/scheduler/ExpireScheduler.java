@@ -4,12 +4,14 @@ import com.speaknote.speaknote.domain.OldData;
 import com.speaknote.speaknote.service.audioresult.AudioResultDbService;
 import com.speaknote.speaknote.service.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ExpireScheduler {
@@ -22,7 +24,8 @@ public class ExpireScheduler {
     public void expire(){
 
         List<OldData> oldDataList = audioResultDbService.findOldData();
-        if (oldDataList == null || oldDataList.isEmpty()) {
+        if (oldDataList.isEmpty()) {
+            log.info("기한 만료된 데이터 없음");
             return;
         }
 
@@ -36,10 +39,20 @@ public class ExpireScheduler {
         }
 
         if(successIdxList.isEmpty()){
+            log.warn("파일 삭제 전체 실패");
             return;
         }
 
         int result = audioResultDbService.deleteOldDataByIdxList(successIdxList);
+        if(result < 0) {
+            return;
+        }
+
+        if(result != successIdxList.size()){
+            log.warn("파일 삭제 수와 db 삭제 row수 불일치 - 파일 삭제 : {}건, db 삭제 : {}건", successIdxList.size(), result);
+        } else {
+            log.info("만료 데이터 리스트 삭제 완료 총 {}건", result);
+        }
 
     }
 

@@ -9,7 +9,6 @@ import lombok.Getter;
 @Builder
 public class FileStorageResult {
     private boolean success;
-    private String errorMessage;
     private String fileName;
     private String filePath;
     private long fileSize;

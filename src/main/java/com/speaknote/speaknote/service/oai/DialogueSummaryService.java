@@ -3,16 +3,19 @@ package com.speaknote.speaknote.service.oai;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.speaknote.speaknote.dto.DialogueSummaryResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class DialogueSummaryService extends AbstractOpenAiService {
 
@@ -93,7 +96,7 @@ public class DialogueSummaryService extends AbstractOpenAiService {
 //            }
 
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", "gpt-5.1");
+            requestBody.put("model", "gpt-5.2");
 
             Map<String, Object> schema = new HashMap<>();
             schema.put("type", "object");
@@ -138,12 +141,15 @@ public class DialogueSummaryService extends AbstractOpenAiService {
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
+                    .timeout(Duration.ofSeconds(60))
                     .block();
 
             String content = objectMapper.readTree(response).at("/choices/0/message/content").asText();
             Map<String, Object> map =  objectMapper.readValue(content, Map.class);
             String dialogue = (String) map.get("dialogue");
             String summary = (String) map.get("summary");
+            
+            log.info("gpt-5.2 모델 api 호출 성공");
 
             return DialogueSummaryResult.builder()
                     .success(true)
@@ -153,20 +159,18 @@ public class DialogueSummaryService extends AbstractOpenAiService {
 
         } catch (WebClientResponseException e) {
 
-            System.out.println(e.getResponseBodyAsString());
+            log.error("gpt-5.2 모델 api 요청 에러 : {}", e.getResponseBodyAsString());
 
             return DialogueSummaryResult.builder()
                     .success(false)
-                    .errorMessage(e.getResponseBodyAsString())
                     .build();
 
         } catch (Exception e) {
 
-            System.out.println(e.getMessage());
+            log.error("gpt-5.2 모델 api 호출 중 오류 발생", e);
 
             return DialogueSummaryResult.builder()
                     .success(false)
-                    .errorMessage(e.getMessage())
                     .build();
 
         }

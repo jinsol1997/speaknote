@@ -1,5 +1,6 @@
 package com.speaknote.speaknote.service.storage;
 
+import com.speaknote.speaknote.domain.OldData;
 import com.speaknote.speaknote.dto.FileStorageResult;
 import org.springframework.web.multipart.MultipartFile;
 
