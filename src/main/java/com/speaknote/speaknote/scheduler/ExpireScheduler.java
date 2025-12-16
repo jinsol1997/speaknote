@@ -22,6 +22,8 @@ public class ExpireScheduler {
     // 초 분 시 일 월 요일 **0*** 하면 0:00 ~ 0:59 까지 매초 실행됨
     @Scheduled(cron = "0 0 0 * * *")
     public void expire(){
+        
+        log.info("스케쥴러 시작");
 
         List<OldData> oldDataList = audioResultDbService.findOldData();
         if (oldDataList.isEmpty()) {

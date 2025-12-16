@@ -37,7 +37,7 @@ public class AudioController {
                                          @RequestParam("file") MultipartFile file) {
 
         // required = true 가 기본값이라 null 검증은 안해도 됨
-        if(file.isEmpty() || !isValidUuid(recorderId)){
+        if(file.isEmpty()){
 
             log.warn("비정상요청 recorderId : {}, fileName : {}, contentType : {}, size : {}",
                     recorderId,
@@ -84,16 +84,6 @@ public class AudioController {
         resultMap.put("summary", dialogueSummaryResult.getSummary());
 
         return ResponseEntity.status(HttpStatus.OK).body(resultMap);
-    }
-
-
-    private boolean isValidUuid(String value) {
-        try {
-            UUID.fromString(value);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
 }
