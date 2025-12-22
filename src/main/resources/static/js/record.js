@@ -15,7 +15,6 @@ $(async function () {
     const $startBtn = $('#startBtn');
     const $stopBtn  = $('#stopBtn');
     const $status   = $('#status');
-    const $result   = $('#result');
 
 
     $startBtn.on('click', async function () {
@@ -57,25 +56,26 @@ $(async function () {
 
 
                 $.ajax({
-                    url: '/api/audio/process',
+                    url: '/api/process',
                     type: 'POST',
                     data: formData,
                     processData: false,      // jquery가 formData를 문자열로 변경하지 않도록 하는 옵션
                     contentType: false,      // formData의 content-Type 헤더와 바운더리를 jquery가 수정하지 않도록 하는 옵션
                     success: function (data) {
                         $status.text('완료!');
-                        if (data && data.text) {
-                            $result.text(data.text);
-                        } else {
-                            $result.text(JSON.stringify(data, null, 2));
-                        }
+
                         $startBtn.prop('disabled', false);
                         $stopBtn.prop('disabled', true);
+
+                        window.dispatchEvent(new CustomEvent('history:prepend', { detail: data }));
                     },
-                    error: function (xhr, status, err) {
-                        console.error(err);
-                        $status.text('에러 발생');
-                        $result.text(err || xhr.responseText || '알 수 없는 오류');
+                    error: function (xhr) {
+                        console.error(xhr);
+                        let message = '에러발생';
+                        try {
+                            message = JSON.parse(xhr.responseText).error || message;
+                        } catch {}
+                        $status.text(message);
                         $startBtn.prop('disabled', false);
                         $stopBtn.prop('disabled', true);
                     }

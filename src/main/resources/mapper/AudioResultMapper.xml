@@ -5,7 +5,11 @@
 
 <mapper namespace="com.speaknote.speaknote.mapper.AudioResultMapper">
 
-    <insert id="insert" parameterType="AudioResult">
+    <insert id="insert"
+            parameterType="com.speaknote.speaknote.domain.AudioResult"
+            useGeneratedKeys="true"
+            keyProperty="idx"
+    >
         INSERT INTO audio_result (
                 recorder_id,
                 dialogue,
@@ -40,5 +44,13 @@
             #{idx}
         </foreach>
     </delete>
+    
+    <select id="findHistoryByRecorderIdBeforeIdx" resultType="com.speaknote.speaknote.domain.AudioResult">
+        SELECT idx, dialogue, summary, file_path, created FROM audio_result
+        WHERE recorder_id = #{recorderId}
+        AND idx &lt; #{lastIdx}
+        ORDER BY idx DESC
+        LIMIT #{limit}
+    </select>
     
 </mapper>

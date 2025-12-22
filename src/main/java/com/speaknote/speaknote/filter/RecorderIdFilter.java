@@ -13,6 +13,25 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.UUID;
 
+
+/**
+ * 요청마다 recorderId 쿠키를 관리하고,
+ * 로그 추적을 위해 MDC에 식별자를 설정하는 요청당 한 번 실행되는 필터.
+ *
+ * <p>주요 역할:</p>
+ * <ul>
+ *   <li>recorderId 쿠키 존재 여부 확인</li>
+ *   <li>유효하지 않거나 없는 경우 UUID 신규 발급</li>
+ *   <li>쿠키를 7일 만료로 갱신</li>
+ *   <li>MDC에 recorderId를 저장하여 로그 추적 가능하게 처리</li>
+ * </ul>
+ *
+ * <p>적용 범위:</p>
+ * <ul>
+ *   <li>API 및 일반 요청에만 적용</li>
+ *   <li>정적 리소스 요청은 필터 대상에서 제외</li>
+ * </ul>
+ */
 @Slf4j
 @Component
 public class RecorderIdFilter extends OncePerRequestFilter {
@@ -20,6 +39,17 @@ public class RecorderIdFilter extends OncePerRequestFilter {
     private static final String COOKIE_NAME = "recorderId";
     private static final int MAX_AGE = 60 * 60 * 24 * 7;
 
+
+    /**
+     * <p>처리 흐름:</p>
+     * <ul>
+     *   <li>요청 쿠키에서 recorderId 조회</li>
+     *   <li>UUID 형식 검증</li>
+     *   <li>유효하지 않으면 신규 UUID 발급</li>
+     *   <li>쿠키 갱신 및 응답에 설정</li>
+     *   <li>MDC에 recorderId 저장</li>
+     * </ul>
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -52,6 +82,18 @@ public class RecorderIdFilter extends OncePerRequestFilter {
 
     }
 
+
+    /**
+     * 필터를 적용하지 않을 요청 경로를 지정
+     *
+     * <p>대상 제외:</p>
+     * <ul>
+     *   <li>정적 리소스 (js, css, images 등)</li>
+     *   <li>chrome 개발자 툴에서 보내는 요청</li>
+     * </ul>
+     *
+     * @return 필터 제외 조건
+     */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
@@ -63,6 +105,12 @@ public class RecorderIdFilter extends OncePerRequestFilter {
                 || uri.endsWith(".svg") || uri.endsWith(".gif") || uri.startsWith("/.well-known/");
     }
 
+
+    /**
+     * 요청 쿠키에서 recorderId 값을 조회한다.
+     *
+     * @return recorderId 쿠키 값, 존재하지 않으면 null
+     */
     private String getCookieValue(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
@@ -77,6 +125,13 @@ public class RecorderIdFilter extends OncePerRequestFilter {
         return null;
     }
 
+
+    /**
+     * 문자열이 UUID 형식인지 검증한다.
+     *
+     * @param value 검증할 문자열
+     * @return UUID 형식이면 true, 아니면 false
+     */
     private boolean isValidUuid(String value) {
         try {
             UUID.fromString(value);

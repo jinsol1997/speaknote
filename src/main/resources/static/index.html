@@ -1,23 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8">
-    <title>SPEAKNOTE</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpeakNote</title>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script type="module" src="/js/record.js"></script>
 
+    <script type="module" src="/js/record.js"></script>
+    <script type="module" src="/js/history.js"></script>
+    <link rel="stylesheet" href="/css/app.css" />
 </head>
 
 <body>
-<h1>녹음 → Whisper STT 테스트</h1>
+<div class="container">
+    <header class="header">
+        <h1>SpeakNote</h1>
+        <p class="muted">대화 내용을 자동으로 정리하고 기록하는 음성 노트</p>
+    </header>
 
-<button id="startBtn">녹음 시작</button>
-<button id="stopBtn" disabled>녹음 종료</button>
+    <!-- 녹음 UI -->
+    <section class="panel">
+        <div class="row gap">
+            <button id="startBtn" class="btn primary" type="button">녹음 시작</button>
+            <button id="stopBtn" class="btn" type="button" disabled>녹음 종료</button>
+            <span id="status" class="status muted">대기 중</span>
+        </div>
 
-<p id="status"></p>
-<pre id="result"></pre>
+    </section>
+
+    <!-- 히스토리 UI -->
+    <section class="panel">
+        <div class="row space-between">
+            <h2>History</h2>
+        </div>
+
+        <div id="historyList"></div>
+        <button id="loadMoreBtn" class="btn" type="button" style="display:none;">더 보기</button>
+    </section>
+</div>
+
 </body>
-
 </html>
