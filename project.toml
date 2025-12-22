@@ -1,0 +1,2 @@
+[build]
+env = ["GOOGLE_RUNTIME_VERSION=17"]
