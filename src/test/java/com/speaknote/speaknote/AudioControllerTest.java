@@ -56,13 +56,13 @@ public class AudioControllerTest {
     @Test
     public void uploadAudioControllerTest() throws IOException {
 
-        Path path = Paths.get(uploadDir, "test3.wav").toAbsolutePath().normalize();
+        Path path = Paths.get(uploadDir, "test4.wav").toAbsolutePath().normalize();
         byte[] bytes = Files.readAllBytes(path);
 
         MultipartFile multipartFile = new MockMultipartFile("file", "test.wav", "audio/wav",  bytes);
 
         MockHttpSession session = new MockHttpSession();
-        ResponseEntity<?> responseEntity = audioController.uploadAudio("testId", multipartFile, session);
+        ResponseEntity<?> responseEntity = audioController.uploadAudio("41450a7e-9b07-4699-a648-135f1e0acb42", multipartFile, session);
 
         System.out.println(responseEntity.getBody());
     }

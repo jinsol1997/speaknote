@@ -1,5 +1,24 @@
 /* /css/app.css — SpeakNote Dark (clean) */
 
+.github-hero {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #111827, #374151);
+    border-radius: 999px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+}
+
+.github-hero:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #000000, #1f2937);
+}
+
 :root{
     --bg0:#0b0d12;
     --bg1:#0f121a;
